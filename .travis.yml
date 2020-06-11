@@ -4,7 +4,7 @@ jdk:
   - openjdk14
 
 install: skip
-script: mvn install site -Dgpg.skip=true --batch-mode --show-version --update-snapshots
+script: mvn install site -Dgpg.skip=true --batch-mode --show-version --update-snapshots 2>&1 | tee stdout.txt && if grep --perl-regexp "(?i)\\[(warn|err)" stdout.txt; then exit 1; fi
 
 cache:
   directories:
