@@ -2,14 +2,12 @@ language: java
 jdk:
   - openjdk8
   - openjdk14
-
-install: skip
-script: mvn install site -Dgpg.skip=true --batch-mode --show-version --update-snapshots 2>&1 | tee stdout.txt && if grep --perl-regexp "(?i)x\\[(warn|err)" stdout.txt; then exit 1; fi
-
 cache:
   directories:
     - $HOME/.m2/repository
 
+install: skip
+script: mvn install site -Dgpg.skip=true --batch-mode --show-version --update-snapshots 2>&1 | tee stdout.txt && if grep -iP "\\[(warn|err)" stdout.txt; then exit 1; fi
 after_success:
   - cp ./CHANGELOG.md ./target/site/CHANGELOG.md
   - cp ./README.md ./target/site/README.md
